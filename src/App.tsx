@@ -1,25 +1,55 @@
 import React from 'react';
-import logo from './logo.svg';
+import axios from 'axios';
+
+import {User} from './types/App'
+import {Post} from './types/Post'
+
 import './App.css';
 
 function App() {
+
+  const [user, setUser] = React.useState([])
+  const [id, setId] = React.useState(0)
+  const [post, setPost] = React.useState([])
+
+  React.useEffect(() =>{
+    axios.get('https://jsonplaceholder.typicode.com/users/')
+        .then(resposta => setUser(resposta.data))
+
+  }, [])
+
+ 
+  React.useEffect(() =>{
+    axios.get(`https://jsonplaceholder.typicode.com/users/${id}/posts`)
+      .then(resposta => setPost(resposta.data)) 
+  }, [id])
+  
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {user !== null && user.map((iten: User) =>(
+        <React.Fragment key={iten.id}>
+          <ul key={iten.id}>
+            <li onClick={() => setId(iten.id)}>{iten.name} {iten.id}</li>
+          </ul>
+        </React.Fragment> 
+      ))}
+
+      <hr/>
+
+      <div>
+        {post !== null && post.map((iten: Post) =>(
+          <React.Fragment key={iten.id}>
+            <ul>
+              <li>{iten.userId} {iten.title}</li>
+              <li>{iten.body}</li>
+            </ul>
+          </React.Fragment>
+        ))}
+      </div>
+      
     </div>
+
   );
 }
 
