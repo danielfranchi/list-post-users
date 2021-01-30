@@ -41,8 +41,8 @@ function App() {
         {post !== null && post.map((iten: Post) =>(
           <React.Fragment key={iten.id}>
             <ul>
-              <li>{iten.userId} {iten.title}</li>
-              <li>{iten.body}</li>
+              <li><h1>{iten.userId} - {iten.title}</h1></li>
+              <li><p>{iten.body}</p></li>
             </ul>
           </React.Fragment>
         ))}
